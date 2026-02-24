@@ -18,8 +18,10 @@ class LottoGenerator extends HTMLElement {
     style.textContent = `
       .wrapper {
         padding: 20px;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
+        background-color: var(--container-bg);
+        transition: all 0.3s;
       }
       .numbers {
         display: flex;
@@ -34,8 +36,21 @@ class LottoGenerator extends HTMLElement {
         height: 40px;
         margin: 0 5px;
         border-radius: 50%;
-        background-color: #eee;
+        background-color: var(--ball-bg);
+        color: var(--ball-text);
         font-size: 18px;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s;
+      }
+      button {
+        padding: 8px 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-weight: bold;
+        transition: all 0.3s;
       }
     `;
 
@@ -68,3 +83,21 @@ class LottoGenerator extends HTMLElement {
 }
 
 customElements.define('lotto-generator', LottoGenerator);
+
+// Theme Toggle Logic
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check for saved theme preference
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme) {
+    body.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+}
+
+themeToggle.addEventListener('click', () => {
+    let theme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    themeToggle.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+});
